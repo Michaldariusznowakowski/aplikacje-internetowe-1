@@ -1,46 +1,119 @@
 body{
     margin:0;
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(53, 81, 160, 1);
-    background-image: linear-gradient(126deg, rgba(53, 81, 160, 1) 30%, rgba(41, 53, 86, 1) 91%);
 }
-.container{
-    display:flex;
-    justify-content: space-between;
-    align-items: stretch;
+/* Grid wrapper  */
+.wrapper {
+  display: grid;
+  grid-template-areas:
+  "navbar navbar navbar"
+  "aside-l main aside-r"
+  "footer footer footer";
+  grid-template-rows: 10% 85% 5%;
+  grid-template-columns: 20% 70% 10%;
+  width: 100%;
+  height: 100%;
+  row-gap: 5vh;
 }
-.navbar {
-    background-color:rgba(164, 170, 189, 0.589);
-    display: flex;
-    flex-flow: row wrap;
-    /* This aligns items to the end line on main-axis */
-    justify-content: flex-end;
+.navbar{
+  grid-area: navbar;
 }
-/* Medium screens */
-@media all and (max-width: 800px) {
-    .navbar {
-      /* When on medium sized screens, we center it by evenly distributing empty space around items */
-      justify-content: space-around;
+.aside-l{
+  grid-area: aside-l;
+}
+.aside-r{
+  grid-area: aside-r;
+}
+.main{
+  grid-area: main;
+}
+.footer{
+  grid-area: footer;
+}
+/* Navbar */
+.navbar{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-flow: row;
+}
+.navbar > img{
+  max-width:9vh;
+  align-self:flex-start;
+}
+/* @MEDIA */
+/* Small screens */
+@media all and (max-width: 500px) {
+  /* Wrapper */
+    .wrapper{
+      grid-template-areas:
+      "navbar"
+      "main" 
+      "aside-l"
+      "aside-r"
+      "footer";
+      grid-template-rows: 15% 50% 15% 15% 5%;
+      grid-template-columns: auto;
     }
+    
+  /* Navbar */
+    .navbar{
+      justify-content: center;
+      flex-flow: column wrap;
+      padding: 1vh;
+    }
+  .navbar > img{
+    max-width:10vh;
+    align-self:auto;
   }
   
-  /* Small screens */
-  @media all and (max-width: 500px) {
-    .navbar {
-      /* On small screens, we are no longer using row direction but column */
-      flex-direction: column;
-    }
   }
-.navbar  ul {
-    height: 100%;
-    list-style-type: none;
+
+
+  /* Styling  */
+.wrapper{
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: rgba(255, 255, 255, 0);
+  background-image: url(./img/bg.png)
 }
-.navbar li {
-    display:inline;
-    color:white;
-    margin-left:15vw;
-    font-size:2vh;
+.navbar{
+  backdrop-filter: blur(50px);
+  background-color: rgba(255, 255, 255, 0.54);
+}
+.navbar a {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  padding-left: 5vw;
+  color:rgb(0, 0, 0);
+  font-size:2vh;
+  text-decoration: none;
+}
+.aside-l{
+  backdrop-filter: blur(50px);
+  background-color: rgba(255, 255, 255, 0.54);
+  border-color: rgba(42, 42, 42, 0.825);
+  border-radius: 0 30px 30px 0;
+  margin-right: 5vw;
+  padding-left: 2vh;
+}
+
+.main{
+  color:white;
+  padding: 5vh;
+  backdrop-filter: blur(30px);
+}
+.footer{
+  backdrop-filter: blur(10px);
+  color:rgba(255, 255, 255, 0.374);
+  text-align: center;
+}
+.ad{
+  width: 100%;
+  margin-top: 8vh;
+}
+.ad img{
+  text-align: center;
+  max-width: 20vh;
+  max-height: 100%;
 }
