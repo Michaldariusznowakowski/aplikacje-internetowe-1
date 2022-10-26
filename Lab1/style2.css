@@ -124,6 +124,9 @@ body {
   font-family:cursive;
   color: rgb(11, 179, 19);
 }
+.aside-l ul{
+  list-style:square;
+}
 
 .aside-r {
   backdrop-filter: blur(10px);
@@ -162,6 +165,7 @@ body {
   backdrop-filter: blur(10px);
   color: rgba(0, 255, 0, 0.374);
   text-align: center;
+  letter-spacing: 5px;
 }
 
 /* TEXT AND IMAGE SIZE*/
@@ -219,6 +223,7 @@ body {
 
 .main p {
   font-size: 1vw;
+  text-indent: 1.5em;
 }
 
 

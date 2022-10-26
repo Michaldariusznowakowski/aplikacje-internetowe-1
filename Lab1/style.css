@@ -127,6 +127,10 @@ body {
   font-family: monospace;
 }
 
+.aside-l ul{
+  list-style:lower-roman;
+}
+
 .aside-r {
   padding: 2vw;
 }
@@ -238,7 +242,7 @@ body {
     border-color: rgba(42, 42, 42, 0.825);
     text-align: center;
   }
-
+  
 
 
   /* Navbar */
