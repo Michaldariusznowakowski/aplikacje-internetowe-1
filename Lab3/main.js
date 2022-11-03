@@ -25,7 +25,7 @@ function getStorage(){
   }
   
 }
-function show(Data,ids=null) {
+function show(Data,find_ids=null, find_len=null) { // ids for find function 
   hOL=document.getElementById("toDoListOL");
   if(Data==null){
     return;
@@ -40,11 +40,11 @@ function show(Data,ids=null) {
     divTaskButtons=document.createElement("div");
     btnTaskRemove=document.createElement("button");
     
-    //id and classes
-    if(ids==null){
+    //id and classes ids for support find function
+    if(find_ids==null){
       li.id=index;
     }else{
-      li.id=ids[index];
+      li.id=find_ids[index][0];
     }
     
     pTaskDesc.className="TaskDesc";
@@ -53,8 +53,10 @@ function show(Data,ids=null) {
 
     btnTaskRemove.className="TaskRemove"
     //insert data
+      pTaskDesc.appendChild(document.createTextNode(Data[index][0]));
+  
 
-    pTaskDesc.appendChild(document.createTextNode(Data[index][0]))
+
     if(Data[index][1].length<1){
       pTaskDate.appendChild(document.createTextNode("Brak daty."))
     }else{pTaskDate.appendChild(document.createTextNode(Data[index][1]))}
@@ -79,7 +81,8 @@ function editDesc(evt) {
   objDesc=evt.currentTarget;
   newInput=document.createElement("input");
   newInput.type="text";
-  newInput.value=objDesc.innerHTML;
+  id=objDesc.parentNode.id;
+  newInput.value=DATA[id][0];
   newInput.maxlength=_maxLen;
   newInput.className="TaskInEdit";
   objDesc.replaceWith(newInput);
@@ -160,30 +163,37 @@ function remove(evt){
   SEARCH.value="";
   show(DATA);
 }
-
 function find(str){
   let findStr=str.toLowerCase();
   let findLen=findStr.length;
   let outArray=Array();
   let ids=Array();
-  let i=0;
-  DATA.forEach(element => {
-    check=element[0].toLowerCase();
-    for (let index = 0; index < findLen; index++) {
-      if(findStr.charAt(index)!=check.charAt(index)){
-        break;
+  
+  for (let iW = 0; iW < DATA.length; iW++) { // wszytkie słowa w zadaniach
+    const word = DATA[iW][0];
+    let iCHfind=0;
+    let found = 0;
+    let pos=Array();
+    for (let iCH = 0; iCH < word.length; iCH++) { // litery w zadaniu
+      let ch = word.toLowerCase().charAt(iCH);
+      let chf =findStr.charAt(iCHfind);
+      if(ch==chf){ 
+        iCHfind++;
+        if(iCHfind==findLen-1){
+          //mamy fragment!!
+          pos.push(findLen-iCH+1);
+          found=1;
+          iCHfind=0;
+        }
       }
-      if(index+1>=findLen){
-        outArray.push(element);
-        ids.push(i);
-      }
-      
     }
-    i++;
-  });
-  show(outArray,ids);
+    if(found){
+      outArray.push(DATA[iW]);
+      ids.push([iW,pos]);
+    }
+  }
+  show(outArray,ids,findLen);
 }
-
 //EVENTS
 const SEARCH=document.getElementById("search");
 SEARCH.addEventListener('input', function(ev){
