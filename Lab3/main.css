@@ -13,7 +13,6 @@ body{
       "footer";
     grid-template-rows: 0.3fr 0.3fr minmax(100px, 8fr) 0.3fr;
     width: 100vw;
-    height: 100vh;
 }
 .search{
     grid-area: search;
