@@ -5,13 +5,11 @@ const _maxLen=255;
 var DATA=null;
 
 //Only once
-if(true){
-  
-  if (getStorage()){
-    show(DATA);
-  }
-  
+
+if (getStorage()){
+  show(DATA);
 }
+  
 
 //FUNCTIONS
 function updateStorage(){
@@ -23,11 +21,11 @@ function getStorage(){
     return 1;
   }else{
     DATA=Array();
-    return -1;
+    return 0;
   }
   
 }
-function show(Data) {
+function show(Data,ids=null) {
   hOL=document.getElementById("toDoListOL");
   if(Data==null){
     return;
@@ -43,7 +41,12 @@ function show(Data) {
     btnTaskRemove=document.createElement("button");
     
     //id and classes
-    li.id=index;
+    if(ids==null){
+      li.id=index;
+    }else{
+      li.id=ids[index];
+    }
+    
     pTaskDesc.className="TaskDesc";
     pTaskDate.className="TaskDate";
     divTaskButtons.className="TaskButtons";
@@ -97,7 +100,7 @@ function editDescSave(evt){
     newObj.appendChild(document.createTextNode(objDesc.value));
     updateStorage();
   }else{
-    newObj.appendChild(document.createTextNode(DATA[id][1]));
+    newObj.appendChild(document.createTextNode(DATA[id][0]));
   }
   objDesc.replaceWith(newObj);
 }
@@ -162,6 +165,8 @@ function find(str){
   let findStr=str.toLowerCase();
   let findLen=findStr.length;
   let outArray=Array();
+  let ids=Array();
+  let i=0;
   DATA.forEach(element => {
     check=element[0].toLowerCase();
     for (let index = 0; index < findLen; index++) {
@@ -170,11 +175,13 @@ function find(str){
       }
       if(index+1>=findLen){
         outArray.push(element);
+        ids.push(i);
       }
       
     }
+    i++;
   });
-  show(outArray);
+  show(outArray,ids);
 }
 
 //EVENTS
