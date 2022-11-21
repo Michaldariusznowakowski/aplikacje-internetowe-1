@@ -235,6 +235,7 @@ class Main {
     this.mapDisable(true);
     this.buttonDisable(this.btnRaster,true);
     this.buttonDisable(this.btnReset,false);
+    this.buttonDisable(this.btnGeolocal,true);
   }
   puzzle(){
     start.cMap.splitMap();
@@ -257,6 +258,7 @@ class Main {
     this.buttonDisable(this.btnRaster,false);
     this.buttonDisable(this.btnPuzzle,true);
     this.buttonDisable(this.btnReset,true);
+    this.buttonDisable(this.btnGeolocal,false);
   }
 
 }
