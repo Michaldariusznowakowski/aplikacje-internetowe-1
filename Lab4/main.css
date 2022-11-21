@@ -1,0 +1,42 @@
+body{
+    margin:0;
+    padding:0;
+    background-image: url("./data/bg.webp");
+    background-size: cover;
+}
+.wrapperPuzzles{
+    display: grid;
+    grid-template-areas:
+      "info info"
+      "map mapRast"
+      "buttonsGroup buttonsGroup"
+      "puzzles puzzles";
+    grid-template-rows: 0.3fr minmax(100px, 8fr) 0.3fr minmax(100px, 8fr);
+    grid-template-columns: 1fr 1fr;
+    width: 100vw;
+}
+.wrapperPuzzles .info{
+    grid-area: info;
+}
+.wrapperPuzzles .map{
+    grid-area: map;
+}
+.wrapperPuzzles .mapRast{
+    grid-area: mapRast;
+    width: 100%;
+    height: 100%;
+}
+.wrapperPuzzles canvas{
+    width: 100%;
+    height: 100%;
+}
+.wrapperPuzzles .buttonsGroup{
+    grid-area: buttonsGroup;
+}
+.wrapperPuzzles .buttonsGroup button{
+    width: 50px;
+    height: 50px;
+}
+.wrapperPuzzles .puzzles{
+    grid-area: search;
+}
