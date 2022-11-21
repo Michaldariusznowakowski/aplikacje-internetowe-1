@@ -5,20 +5,23 @@ body{
     background-size: cover;
 }
 .wrapperPuzzles{
+    row-gap: 1vh;
     display: grid;
     grid-template-areas:
       "info info"
       "map mapRast"
-      "buttonsGroup buttonsGroup"
-      "puzzles puzzles";
-    grid-template-rows: 0.3fr minmax(100px, 8fr) 0.3fr minmax(100px, 8fr);
+      "buttonsGroup buttonsGroup";
+    grid-template-rows: 0.1fr 0.8fr 0.1fr;
     grid-template-columns: 1fr 1fr;
     width: 100vw;
+    height: 100vh;
 }
+
 .wrapperPuzzles .info{
     grid-area: info;
 }
 .wrapperPuzzles .map{
+    border-color: rgb(rgb(0, 140, 255));
     grid-area: map;
 }
 .wrapperPuzzles .mapRast{
@@ -28,24 +31,72 @@ body{
     height: 100%;
 }
 .wrapperPuzzles .mapRast div{
-    display:flex;
-    flex-wrap: wrap;
-}
-.wrapperPuzzles .mapRast div canvas{
-    width: 25%;
+    display:grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 4px;
+    background-color: rgba(0, 0, 0, 0.356);
 }
 .wrapperPuzzles .mapRast > canvas{
     width: 100%;
     height: 100%;
 }
-
+.wrapperPuzzles .info{
+    font-size: 2vw;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding: 1%;
+}
 .wrapperPuzzles .buttonsGroup{
     grid-area: buttonsGroup;
 }
+
 .wrapperPuzzles .buttonsGroup button{
-    width: 50px;
-    height: 50px;
+    font-size: 1vw;
+    width: 10vw;
+    height: 5vh;
+    background-color:#69698a;
+    color: #fff;
+    border:none; 
+    text-align: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    border-radius:10px; 
 }
-.wrapperPuzzles .puzzles{
-    grid-area: search;
+
+.wrapperPuzzles .buttonsGroup button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
 }
+.wrapperPuzzles .buttonsGroup button:hover {
+    background-color:#000000;
+    transition: 0.7s;
+}
+
+@media all and (max-width: 1000px) {
+    .wrapperPuzzles{
+        row-gap: 1vh;
+        column-gap: 1wh;
+        display: grid;
+        grid-template-areas:
+          "info"
+          "buttonsGroup"
+          "map"
+          "mapRast";
+        grid-template-rows: 0.1fr  0.1fr 0.5fr 0.5fr;
+        grid-template-columns: 1fr;
+        width: 100vw;
+        height: 100vh;
+    }
+    .wrapperPuzzles .buttonsGroup{
+        display:flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content:space-around;
+    }
+    .wrapperPuzzles .buttonsGroup button{
+        font-size: 2vw;
+        width: 20vw;
+        height: 5vh;
+    }
+}
+

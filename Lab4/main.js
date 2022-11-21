@@ -15,6 +15,7 @@ class Geo {
   }
   success(pos) {
     console.log("Geo:SUCCES");
+    this.cMain.TextInfo.innerHTML="You are here -> Latitude: "+pos.coords.latitude+" Longitude: "+pos.coords.longitude;
     this.cMap.setPos(pos.coords);
     this.err=0;
     this.cMain.buttonDisable(this.cMain.btnRaster,false);
@@ -48,6 +49,7 @@ class Map {
   constructor(cMain) {
     this.cMain=cMain;
     this.map = L.map('map');
+    this.layerGroup=L.layerGroup().addTo(this.map);
     this.tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       renderer: L.svg(),
       maxZoom: 19,
@@ -56,13 +58,16 @@ class Map {
   }
   setPos(crd, zoom = 13) {
     this.map.setView([crd.latitude, crd.longitude], zoom);
-    this.marker = L.marker([crd.latitude, crd.longitude]).addTo(this.map);
+    this.layerGroup.clearLayers();
+    L.marker([crd.latitude, crd.longitude]).addTo(this.layerGroup);
   }
   drawMap() {
-    var map=this.map
+    var map=this.map;
+    var cMain=this.cMain;
     leafletImage(this.map, function (err, canvas) {
       let docDivMapRast = document.querySelector(".mapRast");
       docDivMapRast.appendChild(canvas);
+      cMain.buttonDisable(cMain.btnPuzzle,false);
     });
   }
   cropTile(can, ax,ay,bx,by) {
@@ -173,7 +178,7 @@ class Main {
     this.buttonDisable(this.btnRaster,true);
     this.buttonDisable(this.btnPuzzle,true);
     this.buttonDisable(this.btnReset,true);
-    
+    this.TextInfo=document.querySelector(".info");
 
     this.cNotify = new Notify();
     this.cMap = new Map(this);
@@ -213,6 +218,7 @@ class Main {
   victory(){
     this.clearRightPanel();
     this.raster();
+    let parent=document.querySelector(".mapRast");
     this.cNotify.sendNotification("Congratulations! You win!");
   }
   geolocal() {
@@ -221,7 +227,6 @@ class Main {
       this.cNotify.sendNotification("Please allow geolocalization!");
     }
     if(this.cGeo.getErr()==0){
-      this.buttonDisable(this.btnRaster,false);
       this.cNotify.sendNotification("Please wait... Getting your localization!");
     }
   }
@@ -229,7 +234,6 @@ class Main {
     this.cMap.drawMap();
     this.mapDisable(true);
     this.buttonDisable(this.btnRaster,true);
-    this.buttonDisable(this.btnPuzzle,false);
     this.buttonDisable(this.btnReset,false);
   }
   puzzle(){
