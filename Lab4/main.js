@@ -1,5 +1,6 @@
 class Geo {
-  constructor(cMap) {
+  constructor(cMap,cMain) {
+    this.cMain=cMain;
     this.cMap=cMap;
     this.options = {
       enableHighAccuracy: true,
@@ -16,6 +17,7 @@ class Geo {
     console.log("Geo:SUCCES");
     this.cMap.setPos(pos.coords);
     this.err=0;
+    this.cMain.buttonDisable(this.cMain.btnRaster,false);
   }
   error(err) {
     this.err=1;
@@ -43,7 +45,8 @@ class Notify {
 }
 
 class Map {
-  constructor() {
+  constructor(cMain) {
+    this.cMain=cMain;
     this.map = L.map('map');
     this.tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       renderer: L.svg(),
@@ -85,6 +88,7 @@ class Map {
     let lasth=0;
     
     let id=0;
+    let tiles=[];
     for (let j = hs; j <= h; j=j+hs){
       for (let i = ws; i <= w; i=i+ws) {
         let newCan=this.cropTile(docCanvas,lastw,lasth,i,j);
@@ -94,23 +98,36 @@ class Map {
         newCan.addEventListener("dragstart",this.drag.bind(this));
         newCan.addEventListener("drop",this.drop.bind(this));
         id++;
-        newDiv.appendChild(newCan);
+        tiles.push(newCan);
         lastw=i;
       }
       lastw=0;
       lasth=j;
-      
+      let shuffledTiles=tiles.sort((a,b)=>0.5-Math.random());
+      for (let index = 0; index < shuffledTiles.length; index++) {
+        newDiv.appendChild(shuffledTiles[index]);
+        
+      }
     }
     docDivMapRast.appendChild(newDiv);
     docCanvas.remove();
   }
   drag(ev){
     ev.dataTransfer.setData("text", ev.target.id);
-
   }
   allowDrop(ev){
-    ev.preventDefault();
-    
+    ev.preventDefault(); 
+  }
+  checkIfWin(){
+    let list=document.querySelector(".mapRast div").childNodes;
+    let dragindex=0;
+      for(let i=0;i<list.length;i++){
+        if(list[i].id!="puzzle-"+i){
+          return;
+      }
+    }
+    console.log("Victory!")
+    this.cMain.victory();
   }
    drop(e){
     e.preventDefault();
@@ -118,8 +135,6 @@ class Map {
     
     let data=e.dataTransfer.getData("text");
     //copy canvas
-    console.log(e.target);
-    console.log(data);
 
     let clone = document.createElement("canvas");
     let context = clone.getContext("2d");
@@ -132,43 +147,73 @@ class Map {
     clone.addEventListener("dragstart",this.drag.bind(this));
     clone.addEventListener("drop",this.drop.bind(this));
     
-
     if(clone.id !== data) { // nie można na siebie!
-    let nodelist=document.querySelector(".mapRast div").childNodes;
+    let list=document.querySelector(".mapRast div").childNodes;
     let dragindex=0;
-    for(let i=0;i<nodelist.length;i++){
-      if(nodelist[i].id===data){
+    for(let i=0;i<list.length;i++){
+      if(list[i].id===data){
         dragindex=i;
-        console.log(dragindex);
     }
     }
     //replace 
     document.querySelector(".mapRast div").replaceChild(document.querySelector("#"+data),e.target);
     //restore old
     document.querySelector(".mapRast div").insertBefore(clone,parent.childNodes[dragindex]);
+    this.checkIfWin();
     }
     }
   }
 
 class Main {
   constructor() {
-    this.docGeolocal = document.getElementById("geolocal");
-    this.docRaster = document.getElementById("raster");
-    this.docPuzzle = document.getElementById("puzzle");
-
+    this.btnGeolocal = document.getElementById("btnGeolocal");
+    this.btnRaster = document.getElementById("btnRaster");
+    this.btnPuzzle = document.getElementById("btnPuzzle");
+    this.btnReset = document.getElementById("btnReset");
+    this.buttonDisable(this.btnRaster,true);
+    this.buttonDisable(this.btnPuzzle,true);
+    this.buttonDisable(this.btnReset,true);
     
 
     this.cNotify = new Notify();
-    this.cMap = new Map();
-    this.cGeo = new Geo(this.cMap);
+    this.cMap = new Map(this);
+    this.cGeo = new Geo(this.cMap,this);
     this.lol="LOL"
 
     this.createEvents();
   }
   createEvents() {
-    this.docGeolocal.addEventListener("click",this.geolocal.bind(this));
-    this.docRaster.addEventListener("click",this.raster.bind(this));
-    this.docPuzzle.addEventListener("click",this.puzzle.bind(this));
+    this.btnGeolocal.addEventListener("click",this.geolocal.bind(this));
+    this.btnRaster.addEventListener("click",this.raster.bind(this));
+    this.btnPuzzle.addEventListener("click",this.puzzle.bind(this));
+    this.btnReset.addEventListener("click",this.reset.bind(this));
+  }
+  mapDisable(bool){
+    map=this.cMap.map;
+    if(bool){
+      map.dragging.disable();
+      map.touchZoom.disable();
+      map.doubleClickZoom.disable();
+      map.scrollWheelZoom.disable();
+      map.boxZoom.disable();
+      map.keyboard.disable();
+      if (map.tap) map.tap.disable();
+      document.getElementById('map').style.cursor='default';
+    }else{
+      map.dragging.enable();
+      map.touchZoom.enable();
+      map.doubleClickZoom.enable();
+      map.scrollWheelZoom.enable();
+      map.boxZoom.enable();
+      map.keyboard.enable();
+      if (map.tap) map.tap.enable();
+      document.getElementById('map').style.cursor='grab';
+    }
+  }
+  victory(){
+    this.clearRightPanel();
+    this.raster();
+    this.cNotify.sendNotification("Congratulations! You win!");
   }
   geolocal() {
     this.cGeo.request();
@@ -176,14 +221,38 @@ class Main {
       this.cNotify.sendNotification("Please allow geolocalization!");
     }
     if(this.cGeo.getErr()==0){
+      this.buttonDisable(this.btnRaster,false);
       this.cNotify.sendNotification("Please wait... Getting your localization!");
     }
   }
   raster(){
     this.cMap.drawMap();
+    this.mapDisable(true);
+    this.buttonDisable(this.btnRaster,true);
+    this.buttonDisable(this.btnPuzzle,false);
+    this.buttonDisable(this.btnReset,false);
   }
   puzzle(){
     start.cMap.splitMap();
+    this.buttonDisable(this.btnRaster,true);
+    this.buttonDisable(this.btnPuzzle,true);
+    this.buttonDisable(this.btnReset,false);
+  }
+  buttonDisable(btn,bool){
+    btn.disabled=bool;
+  }
+  clearRightPanel(){
+    let parent=document.querySelector(".mapRast");
+    while (parent.firstChild) {
+      parent.removeChild(parent.firstChild);
+  }
+  }
+  reset(){
+    this.mapDisable(false);
+    this.clearRightPanel();
+    this.buttonDisable(this.btnRaster,false);
+    this.buttonDisable(this.btnPuzzle,true);
+    this.buttonDisable(this.btnReset,true);
   }
 
 }
