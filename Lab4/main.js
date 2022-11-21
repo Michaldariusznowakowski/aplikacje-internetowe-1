@@ -72,7 +72,7 @@ class Map {
   }
   cropTile(can, ax,ay,bx,by) {
     let canv = can.getContext('2d');
-    console.log("ax "+ax+"ay "+ay+"bx "+bx+"by "+by);
+    //console.log("ax "+ax+"ay "+ay+"bx "+bx+"by "+by);
     let iD = canv.getImageData(ax, ay, bx, by);
     let newCan = document.createElement('canvas');
     newCan.width = bx - ax;
