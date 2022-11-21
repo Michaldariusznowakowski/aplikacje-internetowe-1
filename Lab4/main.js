@@ -59,11 +59,96 @@ class Map {
     var map=this.map
     leafletImage(this.map, function (err, canvas) {
       let docDivMapRast = document.querySelector(".mapRast");
-      let docCanvas = document.querySelector("#rasterMap");
       docDivMapRast.appendChild(canvas);
     });
   }
-}
+  cropTile(can, ax,ay,bx,by) {
+    let canv = can.getContext('2d');
+    console.log("ax "+ax+"ay "+ay+"bx "+bx+"by "+by);
+    let iD = canv.getImageData(ax, ay, bx, by);
+    let newCan = document.createElement('canvas');
+    newCan.width = bx - ax;
+    newCan.height = by - ay;
+    let newC = newCan.getContext('2d');
+    newC.putImageData(iD, 0, 0);
+    return newCan;    
+ }
+  splitMap(){
+    let docDivMapRast = document.querySelector(".mapRast");
+    let docCanvas = docDivMapRast.querySelector("canvas");
+    let w=docCanvas.width;
+    let h=docCanvas.height;
+    let ws=Math.floor(w/4);
+    let hs=Math.floor(h/4);
+    let newDiv=document.createElement("div");
+    let lastw=0;
+    let lasth=0;
+    
+    let id=0;
+    for (let j = hs; j <= h; j=j+hs){
+      for (let i = ws; i <= w; i=i+ws) {
+        let newCan=this.cropTile(docCanvas,lastw,lasth,i,j);
+        newCan.setAttribute("id","puzzle-"+id);
+        newCan.setAttribute("draggable","true");
+        newCan.addEventListener("dragover",this.allowDrop.bind(this));
+        newCan.addEventListener("dragstart",this.drag.bind(this));
+        newCan.addEventListener("drop",this.drop.bind(this));
+        id++;
+        newDiv.appendChild(newCan);
+        lastw=i;
+      }
+      lastw=0;
+      lasth=j;
+      
+    }
+    docDivMapRast.appendChild(newDiv);
+    docCanvas.remove();
+  }
+  drag(ev){
+    ev.dataTransfer.setData("text", ev.target.id);
+
+  }
+  allowDrop(ev){
+    ev.preventDefault();
+    
+  }
+   drop(e){
+    e.preventDefault();
+    let parent=document.querySelector(".mapRast div");
+    
+    let data=e.dataTransfer.getData("text");
+    //copy canvas
+    console.log(e.target);
+    console.log(data);
+
+    let clone = document.createElement("canvas");
+    let context = clone.getContext("2d");
+    clone.width = e.target.width;
+    clone.height = e.target.height;
+    context.drawImage(e.target, 0, 0);
+    clone.setAttribute("id",e.target.id);
+    clone.setAttribute("draggable","true");
+    clone.addEventListener("dragover",this.allowDrop.bind(this));
+    clone.addEventListener("dragstart",this.drag.bind(this));
+    clone.addEventListener("drop",this.drop.bind(this));
+    
+
+    if(clone.id !== data) { // nie można na siebie!
+    let nodelist=document.querySelector(".mapRast div").childNodes;
+    let dragindex=0;
+    for(let i=0;i<nodelist.length;i++){
+      if(nodelist[i].id===data){
+        dragindex=i;
+        console.log(dragindex);
+    }
+    }
+    //replace 
+    document.querySelector(".mapRast div").replaceChild(document.querySelector("#"+data),e.target);
+    //restore old
+    document.querySelector(".mapRast div").insertBefore(clone,parent.childNodes[dragindex]);
+    }
+    }
+  }
 
 class Main {
   constructor() {
@@ -83,7 +168,7 @@ class Main {
   createEvents() {
     this.docGeolocal.addEventListener("click",this.geolocal.bind(this));
     this.docRaster.addEventListener("click",this.raster.bind(this));
-    //this.docPuzzle.onclick = this.puzzle();
+    this.docPuzzle.addEventListener("click",this.puzzle.bind(this));
   }
   geolocal() {
     this.cGeo.request();
@@ -96,6 +181,9 @@ class Main {
   }
   raster(){
     this.cMap.drawMap();
+  }
+  puzzle(){
+    start.cMap.splitMap();
   }
 
 }

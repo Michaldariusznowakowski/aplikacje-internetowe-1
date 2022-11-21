@@ -23,13 +23,22 @@ body{
 }
 .wrapperPuzzles .mapRast{
     grid-area: mapRast;
+    display:grid;    
     width: 100%;
     height: 100%;
 }
-.wrapperPuzzles canvas{
+.wrapperPuzzles .mapRast div{
+    display:flex;
+    flex-wrap: wrap;
+}
+.wrapperPuzzles .mapRast div canvas{
+    width: 25%;
+}
+.wrapperPuzzles .mapRast > canvas{
     width: 100%;
     height: 100%;
 }
+
 .wrapperPuzzles .buttonsGroup{
     grid-area: buttonsGroup;
 }
