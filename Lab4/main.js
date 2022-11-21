@@ -117,12 +117,6 @@ class Map {
     docDivMapRast.appendChild(newDiv);
     docCanvas.remove();
   }
-  drag(ev){
-    ev.dataTransfer.setData("text", ev.target.id);
-  }
-  allowDrop(ev){
-    ev.preventDefault(); 
-  }
   checkIfWin(){
     let list=document.querySelector(".mapRast div").childNodes;
     let dragindex=0;
@@ -134,13 +128,18 @@ class Map {
     console.log("Victory!")
     this.cMain.victory();
   }
+  drag(ev){
+    ev.dataTransfer.setData("text", ev.target.id);
+  }
+  allowDrop(ev){
+    ev.preventDefault(); 
+  }
    drop(e){
     e.preventDefault();
     let parent=document.querySelector(".mapRast div");
     
     let data=e.dataTransfer.getData("text");
     //copy canvas
-
     let clone = document.createElement("canvas");
     let context = clone.getContext("2d");
     clone.width = e.target.width;
