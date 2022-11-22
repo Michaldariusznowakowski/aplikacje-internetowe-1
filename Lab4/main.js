@@ -56,6 +56,7 @@ class Map {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(this.map);
+    this.map.setView([51.509865, -0.118092. ], 13);
   }
   setPos(crd, zoom = 13) {
     this.map.setView([crd.latitude, crd.longitude], zoom);
