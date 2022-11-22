@@ -19,7 +19,6 @@ class Geo {
     this.cMain.TextInfo.innerHTML="You are here -> Latitude: "+pos.coords.latitude+" Longitude: "+pos.coords.longitude;
     this.cMap.setPos(pos.coords);
     this.err=0;
-    this.cMain.buttonDisable(this.cMain.btnRaster,false);
   }
   error(err) {
     this.err=1;
@@ -176,7 +175,6 @@ class Main {
     this.btnRaster = document.getElementById("btnRaster");
     this.btnPuzzle = document.getElementById("btnPuzzle");
     this.btnReset = document.getElementById("btnReset");
-    this.buttonDisable(this.btnRaster,true);
     this.buttonDisable(this.btnPuzzle,true);
     this.buttonDisable(this.btnReset,true);
     this.TextInfo=document.querySelector(".info");
