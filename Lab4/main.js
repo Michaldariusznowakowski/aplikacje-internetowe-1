@@ -8,7 +8,6 @@ class Geo {
       timeout: 5000,
       maximumAge: 0
     };
-    navigator.geolocation.getCurrentPosition(this.success.bind(this), this.error.bind(this), this.options);
     this.err=0;
   }
   getErr(){
