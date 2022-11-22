@@ -1,3 +1,4 @@
+"use strict";
 class Geo {
   constructor(cMap,cMain) {
     this.cMain=cMain;
@@ -193,7 +194,7 @@ class Main {
     this.btnReset.addEventListener("click",this.reset.bind(this));
   }
   mapDisable(bool){
-    map=this.cMap.map;
+    let map=this.cMap.map;
     if(bool){
       map.dragging.disable();
       map.touchZoom.disable();
