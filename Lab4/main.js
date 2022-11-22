@@ -238,7 +238,7 @@ class Main {
     this.buttonDisable(this.btnGeolocal,true);
   }
   puzzle(){
-    start.cMap.splitMap();
+    this.cMap.splitMap();
     this.buttonDisable(this.btnRaster,true);
     this.buttonDisable(this.btnPuzzle,true);
     this.buttonDisable(this.btnReset,false);
