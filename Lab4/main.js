@@ -263,4 +263,4 @@ class Main {
 
 }
 
-start = new Main();
+let start = new Main();
