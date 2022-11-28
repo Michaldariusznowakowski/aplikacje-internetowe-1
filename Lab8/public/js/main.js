@@ -1,14 +1,24 @@
 /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./_src/main.js":
+/***/ "./_src/main.ts":
 /*!**********************!*\
-  !*** ./_src/main.js ***!
+  !*** ./_src/main.ts ***!
   \**********************/
 /***/ (() => {
 
-var SwitchCSS = /** @class */function () {
+
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+var SwitchCSS = /*#__PURE__*/function () {
   function SwitchCSS(btn1ID, btn2ID, css1Src, css2Src, styleID) {
+    _classCallCheck(this, SwitchCSS);
     this.btn1 = document.querySelector(btn1ID);
     this.btn2 = document.querySelector(btn2ID);
     this.style = document.querySelector(styleID);
@@ -22,36 +32,41 @@ var SwitchCSS = /** @class */function () {
     }
     this.state = 1;
   }
-  SwitchCSS.prototype.addEvent = function () {
-    if (this.btn1 != null && this.btn2 != null) {
-      this.btn1.addEventListener("click", this.switchCss.bind(this));
-      this.btn2.addEventListener("click", this.switchCss.bind(this));
-    } else {
-      throw "addEvent: Cannot find button 1 or button 2!";
+  _createClass(SwitchCSS, [{
+    key: "addEvent",
+    value: function addEvent() {
+      if (this.btn1 != null && this.btn2 != null) {
+        this.btn1.addEventListener("click", this.switchCss.bind(this));
+        this.btn2.addEventListener("click", this.switchCss.bind(this));
+      } else {
+        throw "addEvent: Cannot find button 1 or button 2!";
+      }
     }
-  };
-  SwitchCSS.prototype.switchCss = function () {
-    if (this.style == null) {
-      throw "switchCss: Cannot find style link!";
+  }, {
+    key: "switchCss",
+    value: function switchCss() {
+      if (this.style == null) {
+        throw "switchCss: Cannot find style link!";
+      }
+      if (this.btn1 == null) {
+        throw "switchCss:  Cannot find btn1!";
+      }
+      if (this.btn2 == null) {
+        throw "switchCss:  Cannot find btn2!";
+      }
+      if (this.state == 1) {
+        this.style.href = this.css2;
+        this.state = 2;
+        this.btn1.disabled = true;
+        this.btn2.disabled = false;
+      } else {
+        this.style.href = this.css1;
+        this.state = 1;
+        this.btn1.disabled = false;
+        this.btn2.disabled = true;
+      }
     }
-    if (this.btn1 == null) {
-      throw "switchCss:  Cannot find btn1!";
-    }
-    if (this.btn2 == null) {
-      throw "switchCss:  Cannot find btn2!";
-    }
-    if (this.state == 1) {
-      this.style.href = this.css2;
-      this.state = 2;
-      this.btn1.disabled = true;
-      this.btn2.disabled = false;
-    } else {
-      this.style.href = this.css1;
-      this.state = 1;
-      this.btn1.disabled = false;
-      this.btn2.disabled = true;
-    }
-  };
+  }]);
   return SwitchCSS;
 }();
 var btn1ID = "#CSS1";
@@ -74,7 +89,6 @@ try {
   \****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
@@ -87,7 +101,6 @@ __webpack_require__.r(__webpack_exports__);
   \*****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
@@ -232,7 +245,7 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	__webpack_require__.O(undefined, ["public/css/style2","public/css/style"], () => (__webpack_require__("./_src/main.js")))
+/******/ 	__webpack_require__.O(undefined, ["public/css/style2","public/css/style"], () => (__webpack_require__("./_src/main.ts")))
 /******/ 	__webpack_require__.O(undefined, ["public/css/style2","public/css/style"], () => (__webpack_require__("./_src/css/style.css")))
 /******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["public/css/style2","public/css/style"], () => (__webpack_require__("./_src/css/style2.css")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
